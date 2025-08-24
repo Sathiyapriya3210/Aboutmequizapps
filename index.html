@@ -1,0 +1,186 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Sathya's Quiz</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      background: #0d0d0d;
+      color: #fff;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      height: 100vh;
+      margin: 0;
+    }
+    .quiz-container {
+      background: #1a1a1a;
+      padding: 20px 30px;
+      border-radius: 15px;
+      box-shadow: 0px 0px 15px #00ffff;
+      max-width: 500px;
+      text-align: center;
+    }
+    h1 {
+      color: #00ffff;
+    }
+    .options {
+      margin: 15px 0;
+      text-align: left;
+    }
+    .options button {
+      display: block;
+      width: 100%;
+      margin: 5px 0;
+      padding: 10px;
+      border: none;
+      border-radius: 10px;
+      background: #333;
+      color: white;
+      cursor: pointer;
+      transition: 0.3s;
+    }
+    .options button:hover {
+      background: #00ffff;
+      color: black;
+    }
+    #next-btn {
+      margin-top: 15px;
+      padding: 10px 20px;
+      border: none;
+      border-radius: 10px;
+      background: #00ffff;
+      color: black;
+      cursor: pointer;
+      font-weight: bold;
+      display: none;
+    }
+    #result {
+      font-size: 18px;
+      margin-top: 20px;
+      font-weight: bold;
+      color: #00ff99;
+    }
+  </style>
+</head>
+<body>
+
+  <div class="quiz-container">
+    <h1>Sathya's Quiz 🎯</h1>
+    <div id="question"></div>
+    <div class="options" id="options"></div>
+    <button id="next-btn">Next</button>
+    <div id="result"></div>
+  </div>
+
+  <script>
+    const quizData = [
+      {
+        question: "1. What is Sathya's favourite colour?",
+        options: ["Black", "Blue", "Pink", "Purple"],
+        answer: "Blue"
+      },
+      {
+        question: "2. Which food does Sathya like?",
+        options: ["Biryani", "Curd rice", "Dosa", "Parotta"],
+        answer: "Parotta"
+      },
+      {
+        question: "3. Which subject does Sathya like the most?",
+        options: ["Maths", "Tamil", "English", "All of the above"],
+        answer: "Maths"
+      },
+      {
+        question: "4. Which place does Sathya want to visit?",
+        options: ["Beach", "Park", "Mgm", "Theatre"],
+        answer: "Beach"
+      },
+      {
+        question: "5. What is Sathya’s dream job?",
+        options: ["Developer", "Veterinary doctor", "Teacher", "ML Developer"],
+        answer: "ML Developer"
+      },
+      {
+        question: "6. What time does Sathya wake up?",
+        options: ["8AM", "6AM", "7.30AM", "10AM"],
+        answer: "8AM"
+      },
+      {
+        question: "7. What is Sathya’s favourite movie?",
+        options: ["Varanam Aayiram", "3", "777 Charlie", "Kali"],
+        answer: "777 Charlie"
+      },
+      {
+        question: "8. Who is Sathya’s best friend?",
+        options: ["Sandhiya", "Sowmiya", "Sneha", "Bhanu"],
+        answer: "Sandhiya"
+      },
+      {
+        question: "9. Which one does Sathya like?",
+        options: ["Coffee", "Tea", "Milk", "Boost"],
+        answer: "Milk"
+      },
+      {
+        question: "10. Who is Sathya’s favourite actor?",
+        options: ["Vijay", "Ajith Kumar", "Suriya", "Vikram"],
+        answer: "Ajith Kumar"
+      }
+    ];
+
+    const questionEl = document.getElementById("question");
+    const optionsEl = document.getElementById("options");
+    const nextBtn = document.getElementById("next-btn");
+    const resultEl = document.getElementById("result");
+
+    let currentQuestion = 0;
+    let score = 0;
+
+    function loadQuestion() {
+      const q = quizData[currentQuestion];
+      questionEl.textContent = q.question;
+      optionsEl.innerHTML = "";
+      q.options.forEach(option => {
+        const btn = document.createElement("button");
+        btn.textContent = option;
+        btn.onclick = () => checkAnswer(btn, q.answer);
+        optionsEl.appendChild(btn);
+      });
+    }
+
+    function checkAnswer(button, correctAnswer) {
+      if (button.textContent === correctAnswer) {
+        button.style.background = "green";
+        score++;
+      } else {
+        button.style.background = "red";
+      }
+      Array.from(optionsEl.children).forEach(btn => btn.disabled = true);
+      nextBtn.style.display = "inline-block";
+    }
+
+    nextBtn.addEventListener("click", () => {
+      currentQuestion++;
+      if (currentQuestion < quizData.length) {
+        loadQuestion();
+        nextBtn.style.display = "none";
+      } else {
+        showResult();
+      }
+    });
+
+    function showResult() {
+      questionEl.textContent = "Quiz Completed 🎉";
+      optionsEl.innerHTML = "";
+      nextBtn.style.display = "none";
+      let percentage = (score / quizData.length) * 100;
+      resultEl.textContent = `You scored ${score}/${quizData.length} (${percentage.toFixed(2)}%)`;
+    }
+
+    loadQuestion();
+  </script>
+
+</body>
+</html>
+
